@@ -1,40 +1,54 @@
+<html>
+<head>
+<title>Coding in Progress</title>
 <script>
 
-function renderTimeSpan(idPrefix, ellapsedMilliseconds) {
-	let ellapsedSeconds = ellapsedMilliseconds / 1000;
-	let ellapsedMinutes = ellapsedSeconds / 60;
-	let ellapsedHours = ellapsedMinutes / 60;
-	document.getElementById(idPrefix + '-seconds').innerHTML = (Math.floor(ellapsedSeconds) % 60).toString().padStart(2, '0');
-	document.getElementById(idPrefix + '-minutes').innerHTML = (Math.floor(ellapsedMinutes) % 60).toString().padStart(2, '0');
-	document.getElementById(idPrefix + '-hours').innerHTML = Math.floor(ellapsedHours).toString().padStart(2, '0');
+var storageKey = "coding";
+function getCodingHistory() {
+	let codingHistoryJson = localStorage.getItem(storageKey) || '[]';
+	return JSON.parse(codingHistoryJson);
+}
+
+function setCodingHistory(codingHistory) {
+	localStorage.setItem(storageKey, JSON.stringify(codingHistory));
+}
+
+function padNumber(number) {
+    return number.toString().padStart(2, '0');
+}
+
+function renderTimeSpan(timeSpanId, elapsedMilliseconds) {
+	let elapsedSeconds = elapsedMilliseconds / 1000;
+	let elapsedMinutes = elapsedSeconds / 60;
+	let elapsedHours = elapsedMinutes / 60;
+    let timeSpan = padNumber(Math.floor(elapsedHours)) + ':' +
+        padNumber(Math.floor(elapsedMinutes) % 60) + ':' +
+        padNumber(Math.floor(elapsedSeconds) % 60);
+    document.getElementById(timeSpanId, timeSpan).innerHTML = timeSpan;
 }
 
 function updateBody() {
 	let codingHistory = getCodingHistory();
 	if (codingHistory.length > 0) {
 		let mostRecentEvent = getCodingHistory()[0];
-		let bodyClass = mostRecentEvent.event.toLowerCase();
-		document.getElementById('body').className = bodyClass;
-		let ellapsedMilliseconds = Date.now() - mostRecentEvent.timestamp;
-		renderTimeSpan('ellapsed', ellapsedMilliseconds);
+        document.title = mostRecentEvent.event;
+		document.getElementById('body').className = mostRecentEvent.event;
+
+		let elapsedMilliseconds = Date.now() - mostRecentEvent.timestamp;
+		renderTimeSpan('elapsed', elapsedMilliseconds);
 		let start = Date.now();
 		renderTimeSpan('last-15-minutes', totalCoding(start - 15 * 60 * 1000, Date.now()));
 		renderTimeSpan('last-30-minutes', totalCoding(start - 30 * 60 * 1000, Date.now()));
 		renderTimeSpan('last-hour', totalCoding(start - 60 * 60 * 1000, Date.now()));
 		start = new Date(start);
 		start.setHours(0, 0, 0, 0);
-		start = start.getDate();
+		start = start.getTime();
 		renderTimeSpan('today', totalCoding(start, Date.now()));
 		start = new Date(start);
 		start.setDate(start.getDate() - start.getDay())
-		start = start.getDate();
+		start = start.getTime();
 		renderTimeSpan('this-week', totalCoding(start, Date.now()));
 	}
-}
-
-function getCodingHistory() {
-	let codingHistoryJson = localStorage.getItem('coding') || '[]';
-	return JSON.parse(codingHistoryJson);
 }
 
 function totalCoding(start, end) {
@@ -50,10 +64,6 @@ function totalCoding(start, end) {
 		}
 	}
 	return totalCoding;
-}
-
-function setCodingHistory(codingHistory) {
-	localStorage.setItem('coding', JSON.stringify(codingHistory));
 }
 
 function addItem(event) {
@@ -86,68 +96,53 @@ function unloaded() {
 </script>
 
 <style>
-body.start {
-	background-color: white;
-}
-
-body.stop {
-	background-color: gray;
-}
-
 body.start #start,
 body.start .stop,
 body.stop #stop,
 body.stop .start {
 	display: none;
 }
-
-body.start #ellapsed {
-	background-color: light-blue;
-}
-
-body.stop #ellapsed {
-	background-color: gray;
-}
 </style>
-
-<body id="body" onload="loaded()" onunload="unloaded()">
-<button id="start" onclick="startCoding()">Start</button>
-<button id="stop" onclick="stopCoding()">Stop</button>
-<p id="ellapsed">
-<span id="ellapsed-hours"></span>:<span id="ellapsed-minutes"></span>:<span id="ellapsed-seconds"></span>
-</p>
-<img class="start" src="start.png"/>
-<img class="stop" src="stop.jpg"/>
-<table>
-	<tr>
-		<th>Last 15 minutes</th>
-		<td>
-			<span id="last-15-minutes-hours"></span>:<span id="last-15-minutes-minutes"></span>:<span id="last-15-minutes-seconds"></span>
-		</td>
-	</tr>
-	<tr>
-		<th>Last 30 minutes</th>
-		<td>
-			<span id="last-30-minutes-hours"></span>:<span id="last-30-minutes-minutes"></span>:<span id="last-30-minutes-seconds"></span>
-		</td>
-	</tr>
-	<tr>
-		<th>Last hour</th>
-		<td>
-			<span id="last-hour-hours"></span>:<span id="last-hour-minutes"></span>:<span id="last-hour-seconds"></span>
-		</td>
-	</tr>
-	<tr>
-		<th>Today</th>
-		<td>
-			<span id="today-hours"></span>:<span id="today-minutes"></span>:<span id="today-seconds"></span>
-		</td>
-	</tr>
-	<tr>
-		<th>This week</th>
-		<td>
-			<span id="this-week-hours"></span>:<span id="this-week-minutes"></span>:<span id="this-week-seconds"></span>
-		</td>
-	</tr>
-</table>
+</head>
+<body id="body" class="Stop" onload="loaded()" onunload="unloaded()">
+    <button id="start" onclick="startCoding()">Start</button>
+    <button id="stop" onclick="stopCoding()">Stop</button>
+    <p id="elapsed">
+            00:00:00
+    </p>
+    <img class="start" src="start.png"/>
+    <img class="stop" src="stop.jpg"/>
+    <table>
+        <tr>
+            <th>Last 15 minutes</th>
+            <td id="last-15-minutes">
+                00:00:00
+            </td>
+        </tr>
+        <tr>
+            <th>Last 30 minutes</th>
+            <td id="last-30-minutes">
+                00:00:00
+            </td>
+        </tr>
+        <tr>
+            <th>Last hour</th>
+            <td id="last-hour">
+                00:00:00
+            </td>
+        </tr>
+        <tr>
+            <th>Today</th>
+            <td id="today">
+                00:00:00
+            </td>
+        </tr>
+        <tr>
+            <th>This week</th>
+            <td id="this-week">
+                00:00:00
+            </td>
+        </tr>
+    </table>
 </body>
+</html>

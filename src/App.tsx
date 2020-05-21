@@ -21,21 +21,21 @@ var workingDay = 7 * 60 * 60 * 1000;
 var workingWeek = 5 * workingDay;
 
 function getCodingHistory(): Item[] {
-	let codingHistoryJson = localStorage.getItem(storageKey) || '[]';
-	return JSON.parse(codingHistoryJson);
+  let codingHistoryJson = localStorage.getItem(storageKey) || '[]';
+  return JSON.parse(codingHistoryJson);
 }
 
 function setCodingHistory(codingHistory: Item[]) {
-	localStorage.setItem(storageKey, JSON.stringify(codingHistory));
+  localStorage.setItem(storageKey, JSON.stringify(codingHistory));
 }
 
 function addItem(event: string) {
-	let codingHistory = getCodingHistory();
-	let item = {event: event, timestamp: Date.now()};
-	if (codingHistory.length === 0 || codingHistory[0].event !== event) {
-		let updatedHistory = [item].concat(codingHistory);
-		setCodingHistory(updatedHistory);
-	}
+  let codingHistory = getCodingHistory();
+  let item = {event: event, timestamp: Date.now()};
+  if (codingHistory.length === 0 || codingHistory[0].event !== event) {
+    let updatedHistory = [item].concat(codingHistory);
+    setCodingHistory(updatedHistory);
+  }
 }
 
 function padNumber(number: number) {
@@ -52,9 +52,9 @@ function formatTimeSpan(elapsedMilliseconds: number) {
 }
 
 function elapsed(now: number, startAfter: number = 0): number {
-	let codingHistory = getCodingHistory();
-	if (codingHistory.length > 0) {
-		let mostRecentEvent = getCodingHistory()[0];
+  let codingHistory = getCodingHistory();
+  if (codingHistory.length > 0) {
+    let mostRecentEvent = getCodingHistory()[0];
     document.title = mostRecentEvent.event;
     return Math.max(0, now - mostRecentEvent.timestamp - startAfter);
   } else {
@@ -80,33 +80,34 @@ function thisWeek(now: number, startAfter: number = 0): number {
 }
 
 function totalCoding(start: number, end: number, startAfter: number = 0) {
-	let codingHistory = [{event:'Stop', timestamp: end}].concat(getCodingHistory());
-	let totalCoding = 0;
-	for (let i = 1; i < codingHistory.length; i++) {
-		let item = codingHistory[i - 1];
-		let last = codingHistory[i];
-		let from = Math.min(end, Math.max(start, last.timestamp));
+  start = start - startAfter;
+  let codingHistory = [{event:'Stop', timestamp: end}].concat(getCodingHistory());
+  let totalCoding = 0;
+  for (let i = 1; i < codingHistory.length; i++) {
+    let item = codingHistory[i - 1];
+    let last = codingHistory[i];
+    let from = Math.min(end, Math.max(start, last.timestamp));
     let to = Math.min(end, Math.max(start, item.timestamp));
     let duration = to - from;
-		if (last.event === 'Start' && duration >= startAfter) {
-			totalCoding += duration - startAfter;
-		}
-	}
-	return totalCoding;
+    if (last.event === 'Start' && duration >= startAfter) {
+      totalCoding += duration - startAfter;
+    }
+  }
+  return totalCoding;
 }
 
 function startCoding() {
-	addItem('Start');
+  addItem('Start');
 }
 
 function stopCoding() {
-	addItem('Stop');
+  addItem('Stop');
 }
 
 function currentState(): string {
-	let codingHistory = getCodingHistory();
-	if (codingHistory.length > 0) {
-		let mostRecentEvent = getCodingHistory()[0];
+  let codingHistory = getCodingHistory();
+  if (codingHistory.length > 0) {
+    let mostRecentEvent = getCodingHistory()[0];
     return mostRecentEvent.event;
   } else {
     return 'Stop';

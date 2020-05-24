@@ -1,4 +1,5 @@
 import Item from "./Item";
+import Config from "./Config";
 
 export function getCodingHistory(storageKey: string): Item[] {
     let codingHistoryJson = localStorage.getItem(storageKey) || '[]';
@@ -16,4 +17,24 @@ export function addItem(storageKey: string, event: string) {
         let updatedHistory = [item].concat(codingHistory);
         setCodingHistory(storageKey, updatedHistory);
     }
+}
+
+const inTheZone = 15 * 60 * 1000;
+const storageKey = "coding";
+const workingDay = 7 * 60 * 60 * 1000;
+const workingWeek = 5 * workingDay;
+const defaultConfig: Config = {
+    inTheZone,
+    storageKey,
+    workingDay,
+    workingWeek,
+}
+
+export function getConfig(): Config {
+    let configJson = localStorage.getItem("config") || JSON.stringify(defaultConfig);
+    return JSON.parse(configJson);
+}
+
+export function setConfig(config: Config) {
+    localStorage.setItem("config", JSON.stringify(config));
 }

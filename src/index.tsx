@@ -4,19 +4,17 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getConfig } from './Store';
 
-var storageKey = "coding";
-var inTheZone = 15 * 60 * 1000;
-var workingDay = 7 * 60 * 60 * 1000;
-var workingWeek = 5 * workingDay;
+const initialConfig = getConfig();
 
 ReactDOM.render(
   <React.StrictMode>
     <App
-      inTheZone={inTheZone}
-      storageKey={storageKey}
-      workingDay={workingDay}
-      workingWeek={workingWeek} />
+      inTheZone={initialConfig.inTheZone}
+      storageKey={initialConfig.storageKey}
+      workingDay={initialConfig.workingDay}
+      workingWeek={initialConfig.workingWeek} />
   </React.StrictMode>,
   document.getElementById('root')
 );

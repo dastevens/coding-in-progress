@@ -4,17 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getConfig } from './Store';
-
-const initialConfig = getConfig();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App
-      inTheZone={initialConfig.inTheZone}
-      storageKey={initialConfig.storageKey}
-      workingDay={initialConfig.workingDay}
-      workingWeek={initialConfig.workingWeek} />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

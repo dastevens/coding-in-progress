@@ -30,6 +30,11 @@ const defaultConfig: Config = {
     workingWeek,
 }
 
+export function resetConfig(): Config {
+    setConfig(defaultConfig);
+    return defaultConfig;
+}
+
 export function getConfig(): Config {
     let configJson = localStorage.getItem("config") || JSON.stringify(defaultConfig);
     return JSON.parse(configJson);

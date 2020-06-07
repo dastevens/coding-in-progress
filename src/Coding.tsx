@@ -116,7 +116,7 @@ function Coding(props: CodingProps) {
                 {
                     isInTheZone(props.now, props.inTheZone)
                     ? <Badge variant="success">{formatTimeSpan(elapsed(props.now, props.inTheZone))}</Badge>
-                    : <Badge variant="warning">{formatTimeSpan(elapsed(props.now, props.inTheZone))}</Badge>
+                    : <Badge variant="warning">{formatTimeSpan(0)}</Badge>
                 }
             </td>
             <td>

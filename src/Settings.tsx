@@ -3,7 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import Config from "./Config";
 
 interface SettingsAttributes {
-    storageKey: string;
     inTheZone: number;
     workingDay: number;
     workingWeek: number;
@@ -22,7 +21,6 @@ function Settings(props: SettingsProps) {
 
     function updateInTheZone(newInTheZone: number) {
         props.onChange({
-            storageKey: props.storageKey,
             inTheZone: newInTheZone,
             workingDay: props.workingDay,
             workingWeek: props.workingWeek
@@ -31,7 +29,6 @@ function Settings(props: SettingsProps) {
 
     function updateWorkingDay(newWorkingDay: number) {
         props.onChange({
-            storageKey: props.storageKey,
             inTheZone: props.inTheZone,
             workingDay: newWorkingDay,
             workingWeek: props.workingWeek
@@ -40,19 +37,9 @@ function Settings(props: SettingsProps) {
 
     function updateWorkingWeek(newWorkingWeek: number) {
         props.onChange({
-            storageKey: props.storageKey,
             inTheZone: props.inTheZone,
             workingDay: props.workingDay,
             workingWeek: newWorkingWeek
-        })
-    }
-
-    function updateStorageKey(newStorageKey: string) {
-        props.onChange({
-            storageKey: newStorageKey,
-            inTheZone: props.inTheZone,
-            workingDay: props.workingDay,
-            workingWeek: props.workingWeek
         })
     }
 
@@ -85,13 +72,6 @@ function Settings(props: SettingsProps) {
                 onChange={e => updateWorkingWeek(parseInt(e.target.value) * props.workingDay)}
                 ></Form.Control>
             <Form.Text>How many days do you work each week?</Form.Text>
-        </Form.Group>
-
-        <Form.Group>
-            <Form.Label>Storage key</Form.Label>
-            <Form.Control defaultValue={props.storageKey}
-                onChange={e => updateStorageKey(e.target.value)} title={props.storageKey}></Form.Control>
-            <Form.Text>The key to use</Form.Text>
         </Form.Group>
 
         <Form.Group>

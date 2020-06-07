@@ -19,10 +19,10 @@ function App() {
 
   const [config, setConfig] = useState(getConfig());
 
-  useBeforeunload(() => addItem(config.storageKey, "Stop"));
+  useBeforeunload(() => addItem("Stop"));
 
   function currentState(): string {
-    let codingHistory = getCodingHistory(config.storageKey);
+    let codingHistory = getCodingHistory();
     if (codingHistory.length > 0) {
       let mostRecentEvent = codingHistory[0];
       return mostRecentEvent.event;
@@ -45,14 +45,14 @@ function App() {
             <Tab eventKey="coding" title="Coding">
               <Controls
                 currentState = {currentState()}
-                onStart={() => addItem(config.storageKey, "Start")}
-                onStop={() => addItem(config.storageKey, "Stop")}
+                onStart={() => addItem("Start")}
+                onStop={() => addItem("Stop")}
                 />
               <Coding
                 currentState = {currentState()}
                 inTheZone={config.inTheZone}
                 now={now}
-                codingHistory={getCodingHistory(config.storageKey)}
+                codingHistory={getCodingHistory()}
                 workingDay={config.workingDay}
                 workingWeek={config.workingWeek}
                 />
@@ -61,10 +61,9 @@ function App() {
             <Tab eventKey="settings" title="Settings">
               <Settings 
                 inTheZone={config.inTheZone}
-                storageKey={config.storageKey}
                 workingDay={config.workingDay}
                 workingWeek={config.workingWeek}
-                onResetHistory={() => {setCodingHistory(config.storageKey, []);}}
+                onResetHistory={() => {setCodingHistory([]);}}
                 onChange={newConfig => {updateConfig(newConfig);}}
                 onResetConfig={() => {updateConfig(resetConfig());}}
                 />

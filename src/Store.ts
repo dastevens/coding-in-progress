@@ -1,21 +1,21 @@
 import Item from "./Item";
 import Config from "./Config";
 
-export function getCodingHistory(storageKey: string): Item[] {
+export function getCodingHistory(): Item[] {
     let codingHistoryJson = localStorage.getItem(storageKey) || '[]';
     return JSON.parse(codingHistoryJson);
 }
   
-export function setCodingHistory(storageKey: string, codingHistory: Item[]) {
+export function setCodingHistory(codingHistory: Item[]) {
     localStorage.setItem(storageKey, JSON.stringify(codingHistory));
 }
 
-export function addItem(storageKey: string, event: string) {
-    let codingHistory = getCodingHistory(storageKey);
+export function addItem(event: string) {
+    let codingHistory = getCodingHistory();
     let item = {event: event, timestamp: Date.now()};
     if (codingHistory.length === 0 || codingHistory[0].event !== event) {
         let updatedHistory = [item].concat(codingHistory);
-        setCodingHistory(storageKey, updatedHistory);
+        setCodingHistory(updatedHistory);
     }
 }
 
@@ -25,7 +25,6 @@ const workingDay = 7 * 60 * 60 * 1000;
 const workingWeek = 5 * workingDay;
 const defaultConfig: Config = {
     inTheZone,
-    storageKey,
     workingDay,
     workingWeek,
 }

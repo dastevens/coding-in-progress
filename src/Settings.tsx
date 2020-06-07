@@ -43,32 +43,41 @@ function Settings(props: SettingsProps) {
         })
     }
 
+    function formatMinutesInTheZone(inTheZone: number) {
+        return (props.inTheZone / (60 * 1000)).toString() + " minutes";
+    }
+
+    function formatHoursInWorkingDay(workingDay: number) {
+        return (props.workingDay / (60 * 60 * 1000)).toString() + " hours";
+    }
+
+    function formatDaysInWorkingWeek(workingWeek: number) {
+        return (props.workingWeek / props.workingDay).toString() + " days";
+    }
+
     return <Form>
         <Form.Group>
-            <Form.Label>Minutes to get into the zone</Form.Label>
+            <Form.Label>Minutes to get into the zone ({formatMinutesInTheZone(props.inTheZone)})</Form.Label>
             <Form.Control type="range" min={1} max={20}
                 defaultValue={props.inTheZone / (60 * 1000)}
-                title={(props.inTheZone / (60 * 1000)).toString() + " minutes"}
                 onChange={e => updateInTheZone(parseInt(e.target.value) * 60 * 1000)}
                 ></Form.Control>
             <Form.Text>How long does it take for you to get into the zone?</Form.Text>
         </Form.Group>
 
         <Form.Group>
-            <Form.Label>Hours in a working day</Form.Label>
+            <Form.Label>Hours in a working day ({formatHoursInWorkingDay(props.workingDay)})</Form.Label>
             <Form.Control type="range" min={0.5} max={12} step={0.5}
                 defaultValue={props.workingDay / (60 * 60 * 1000)}
-                title={(props.workingDay / (60 * 60 * 1000)).toString() + " hours"}
                 onChange={e => updateWorkingDay(parseFloat(e.target.value) * 60 * 60 * 1000)}
                 ></Form.Control>
             <Form.Text>How many hours are there in your working day?</Form.Text>
         </Form.Group>
 
         <Form.Group>
-            <Form.Label>Days in a working week</Form.Label>
+            <Form.Label>Days in a working week {formatDaysInWorkingWeek(props.workingWeek)}</Form.Label>
             <Form.Control type="range" min={1} max={7}
                 defaultValue={props.workingWeek / props.workingDay}
-                title={(props.workingWeek / props.workingDay).toString() + " days"}
                 onChange={e => updateWorkingWeek(parseInt(e.target.value) * props.workingDay)}
                 ></Form.Control>
             <Form.Text>How many days do you work each week?</Form.Text>

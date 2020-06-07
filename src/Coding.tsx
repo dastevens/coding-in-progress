@@ -124,30 +124,6 @@ function Coding(props: CodingProps) {
             </td>
         </tr>
         <tr>
-            <th>Last 15 minutes</th>
-            <td>
-                {formatTimeSpan(lastMinutes(props.now, 15))}
-            </td>
-            <td>
-                {formatTimeSpan(lastMinutes(props.now, 15, props.inTheZone))}
-            </td>
-            <td>
-                <Progress percent={100 * lastMinutes(props.now, 15, props.inTheZone) / (15 * 60 * 1000)}/>
-            </td>
-        </tr>
-        <tr>
-            <th>Last 30 minutes</th>
-            <td>
-                {formatTimeSpan(lastMinutes(props.now, 30))}
-            </td>
-            <td>
-                {formatTimeSpan(lastMinutes(props.now, 30, props.inTheZone))}
-            </td>
-            <td>
-                <Progress percent={100 * lastMinutes(props.now, 30, props.inTheZone) / (30 * 60 * 1000)}/>
-            </td>
-        </tr>
-        <tr>
             <th>Last hour</th>
             <td>
                 {formatTimeSpan(lastMinutes(props.now, 60))}

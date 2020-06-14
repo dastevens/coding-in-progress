@@ -3,7 +3,6 @@ import {
     Badge,
     Table,
 } from 'react-bootstrap';
-import './App.css';
 import {
     FaCouch,
     FaRunning,
@@ -11,6 +10,7 @@ import {
 } from 'react-icons/fa';
 import Progress from './Progress';
 import Item from './Item';
+import { totalCoding, forDay } from './Calculator';
 
 interface CodingProps {
   codingHistory: Item[];
@@ -47,37 +47,14 @@ function Coding(props: CodingProps) {
   }
 
   function lastMinutes(now: number, minutes: number, startAfter: number = 0): number {
-    return totalCoding(now - minutes * 60 * 1000, now, startAfter);
-  }
-
-  function forDay(now: number, startAfter: number = 0): number {
-    let midnight = new Date(now);
-    midnight.setHours(0, 0, 0, 0);
-    return totalCoding(midnight.getTime(), now, startAfter);
+    return totalCoding(props.codingHistory, now - minutes * 60 * 1000, now, startAfter);
   }
 
   function lastWeek(now: number, startAfter: number = 0): number {
     let startOfWeek = new Date(now);
     startOfWeek.setHours(0, 0, 0, 0);
     startOfWeek.setDate(startOfWeek.getDate() - 7)
-    return totalCoding(startOfWeek.getTime(), now, startAfter);
-  }
-
-  function totalCoding(start: number, end: number, startAfter: number = 0) {
-    start = start - startAfter;
-    let codingHistory = [{event:'Stop', timestamp: end}].concat(props.codingHistory);
-    let totalCoding = 0;
-    for (let i = 1; i < codingHistory.length; i++) {
-      let item = codingHistory[i - 1];
-      let last = codingHistory[i];
-      let from = Math.min(end, Math.max(start, last.timestamp));
-      let to = Math.min(end, Math.max(start, item.timestamp));
-      let duration = to - from;
-      if (last.event === 'Start' && duration >= startAfter) {
-        totalCoding += duration - startAfter;
-      }
-    }
-    return totalCoding;
+    return totalCoding(props.codingHistory, startOfWeek.getTime(), now, startAfter);
   }
 
   function timeStarted(now: number, startAfter: number = 0) {
@@ -138,13 +115,13 @@ function Coding(props: CodingProps) {
         <tr>
             <th>Today</th>
             <td>
-                {formatTimeSpan(forDay(props.now))}
+                {formatTimeSpan(forDay(props.codingHistory, props.now))}
             </td>
             <td>
-                {formatTimeSpan(forDay(props.now, props.inTheZone))}
+                {formatTimeSpan(forDay(props.codingHistory, props.now, props.inTheZone))}
             </td>
             <td>
-                <Progress percent={100 * forDay(props.now, props.inTheZone) / props.workingDay}/>
+                <Progress percent={100 * forDay(props.codingHistory, props.now, props.inTheZone) / props.workingDay}/>
             </td>
         </tr>
         <tr>

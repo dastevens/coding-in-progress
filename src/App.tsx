@@ -42,7 +42,7 @@ function App() {
     <Container className={currentState()}>
       <Row>
         <Col>
-          <Tabs defaultActiveKey="reports" id="app-tabs">
+          <Tabs defaultActiveKey="coding" id="app-tabs">
             <Tab eventKey="coding" title="Coding">
               <Controls
                 currentState = {currentState()}

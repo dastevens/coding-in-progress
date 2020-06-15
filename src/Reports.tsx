@@ -30,7 +30,7 @@ function Reports(props: ReportsProps) {
   });
 
   return (
-    <div style={{height:"400px", width:"100%"}}>
+    <div style={{height:"25em", width:"100%"}}>
       <Plot
         data={[
           {
@@ -51,10 +51,12 @@ function Reports(props: ReportsProps) {
           },
         ]}
         layout={{
+          autosize: true,
           title: 'In the zone', 
           yaxis: {title:'Minutes'},
         }}
         style={{width:"100%", height:"100%"}}
+        useResizeHandler={true}
       />
     </div>
 );

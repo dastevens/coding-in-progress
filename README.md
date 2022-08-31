@@ -6,7 +6,7 @@ Feel free to try the app out here: https://coding-in-progress.herokuapp.com/
 
 ## How do I use it?
 
-Click the `Start` button when you start getting into some serious coding activity, and hit 'Stop' when you get interrupted.
+Click the `Start` button when you start getting into some serious coding activity, and hit `Stop` when you get interrupted.
 
 Once you have accumulated some stats you can start digging into the report page.
 
